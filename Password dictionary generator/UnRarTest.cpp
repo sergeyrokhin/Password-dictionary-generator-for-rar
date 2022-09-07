@@ -1,10 +1,10 @@
-#define STRICT
+п»ї#define STRICT
 #include <windows.h>
 #include <stdio.h>
 #include <ctype.h>
 #include <locale.h>
 #include "unrar.h"
-#include "Сombinatorics.h"
+#include "РЎombinatorics.h"
 
 extern bool password_found;
 enum { EXTRACT, TEST, PRINT, LIST };
@@ -78,7 +78,7 @@ void ExtractArchive(char* ArcName, KeyWords* words, WordMap* map)
 			if (PFCode == 0) {
 				printf("\n======= !!!! ===== password: %s\nNumber of test: %u\n", PC->password, PC->count);
 				password_found = true;
-				set = 2; //прервать перебор сетов
+				set = 2; //РїСЂРµСЂРІР°С‚СЊ РїРµСЂРµР±РѕСЂ СЃРµС‚РѕРІ
 				break;
 			}
 			RARCloseArchive(hArcData);
@@ -244,7 +244,7 @@ int CALLBACK CallbackProc(UINT msg, LPARAM UserData, LPARAM P1, LPARAM P2)
 			PC->wpassword,
 			_TRUNCATE
 		);
-		eol = wcspbrk((wchar_t*)P1, L"\r\n"); //удаляем управляющие символы, ставим конец строки
+		eol = wcspbrk((wchar_t*)P1, L"\r\n"); //СѓРґР°Р»СЏРµРј СѓРїСЂР°РІР»СЏСЋС‰РёРµ СЃРёРјРІРѕР»С‹, СЃС‚Р°РІРёРј РєРѕРЅРµС† СЃС‚СЂРѕРєРё
 		if (eol != NULL)
 			*eol = 0;
 	}

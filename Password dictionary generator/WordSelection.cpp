@@ -1,4 +1,4 @@
-#include <iostream>
+п»ї#include <iostream>
 #include <bitset>
 #include "WordSelection.h"
 
@@ -61,8 +61,8 @@ bool WordSelection::Next()
     while (++selection < selectionStop)
     {
         unsigned k = 0;
-        //std::cout << "проверка на количество единиц " << std::bitset<16>(selection) << endl;
-        // сколько единиц?
+        //std::cout << "РїСЂРѕРІРµСЂРєР° РЅР° РєРѕР»РёС‡РµСЃС‚РІРѕ РµРґРёРЅРёС† " << std::bitset<16>(selection) << endl;
+        // СЃРєРѕР»СЊРєРѕ РµРґРёРЅРёС†?
         for (size_t i = 0; i < n; i++) {
             if (selection & ((unsigned long long) 1) << i)
             {

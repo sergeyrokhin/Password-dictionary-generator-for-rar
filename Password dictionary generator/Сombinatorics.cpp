@@ -1,8 +1,8 @@
-#include <string>
+п»ї#include <string>
 #include <iostream>
 #include <sstream> 
-#include "Сombinatorics.h"
-#define NUM_OF_WORD 4 //число вариантов модификации слова шифт и заглавная
+#include "РЎombinatorics.h"
+#define NUM_OF_WORD 4 //С‡РёСЃР»Рѕ РІР°СЂРёР°РЅС‚РѕРІ РјРѕРґРёС„РёРєР°С†РёРё СЃР»РѕРІР° С€РёС„С‚ Рё Р·Р°РіР»Р°РІРЅР°СЏ
 
 using namespace std;
 
@@ -46,7 +46,7 @@ WordOrder::WordOrder(unsigned num) {
     order = new unsigned[num];
     for (size_t i = 0; i < number; i++)
     {
-        order[i] = i; //это начальное заполнение
+        order[i] = i; //СЌС‚Рѕ РЅР°С‡Р°Р»СЊРЅРѕРµ Р·Р°РїРѕР»РЅРµРЅРёРµ
     }
 }
 
@@ -74,11 +74,11 @@ bool WordOrder::NextSet()
     int j = number - 2;
     while (j != -1 && order[j] >= order[j + 1]) j--;
     if (j == -1)
-        return false; // больше перестановок нет
+        return false; // Р±РѕР»СЊС€Рµ РїРµСЂРµСЃС‚Р°РЅРѕРІРѕРє РЅРµС‚
     int k = number - 1;
     while (order[j] >= order[k]) k--;
     swap(order, j, k);
-    int l = j + 1, r = number - 1; // сортируем оставшуюся часть последовательности
+    int l = j + 1, r = number - 1; // СЃРѕСЂС‚РёСЂСѓРµРј РѕСЃС‚Р°РІС€СѓСЋСЃСЏ С‡Р°СЃС‚СЊ РїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚Рё
     while (l < r)
         swap(order, l++, r--);
     return true;
@@ -108,22 +108,22 @@ WordMap::WordMap(unsigned num) {
     placement = new unsigned[num];
     for (size_t i = 0; i < number; i++)
     {
-        placement[i] = 0; //это начальное заполнение
+        placement[i] = 0; //СЌС‚Рѕ РЅР°С‡Р°Р»СЊРЅРѕРµ Р·Р°РїРѕР»РЅРµРЅРёРµ
     }
 }
 bool WordMap::NextSet() {
     for (size_t i = 0; i < number; i++)
     {
-        ++ placement[i] %= NUM_OF_WORD; //увеличим значение в этом разряде
-        if (placement[i] != 0) //, если переполнился, то обнулим
+        ++ placement[i] %= NUM_OF_WORD; //СѓРІРµР»РёС‡РёРј Р·РЅР°С‡РµРЅРёРµ РІ СЌС‚РѕРј СЂР°Р·СЂСЏРґРµ
+        if (placement[i] != 0) //, РµСЃР»Рё РїРµСЂРµРїРѕР»РЅРёР»СЃСЏ, С‚Рѕ РѕР±РЅСѓР»РёРј
         {
-            return true; //не переполнился, значит следующий разряд увеличивать не нужно, выход
+            return true; //РЅРµ РїРµСЂРµРїРѕР»РЅРёР»СЃСЏ, Р·РЅР°С‡РёС‚ СЃР»РµРґСѓСЋС‰РёР№ СЂР°Р·СЂСЏРґ СѓРІРµР»РёС‡РёРІР°С‚СЊ РЅРµ РЅСѓР¶РЅРѕ, РІС‹С…РѕРґ
         }
         if (i == number - 1)
         {
             return false;
         }
-        //требуется увеличить следующий разряд, следующий цикл
+        //С‚СЂРµР±СѓРµС‚СЃСЏ СѓРІРµР»РёС‡РёС‚СЊ СЃР»РµРґСѓСЋС‰РёР№ СЂР°Р·СЂСЏРґ, СЃР»РµРґСѓСЋС‰РёР№ С†РёРєР»
     }
     return false;
 }
@@ -132,8 +132,8 @@ bool PasswordCounter::NextPassword() {
     size_t convertedChars = 0;
     size_t size = words->lenght + 1;
     bool not_end = true;
-    if(count != 0) //если это первый шаг, то сдвигаться не будем
-        if(! map->NextSet()) not_end = order->NextSet(); //если карта пролистана, переходим к следующей перестановке
+    if(count != 0) //РµСЃР»Рё СЌС‚Рѕ РїРµСЂРІС‹Р№ С€Р°Рі, С‚Рѕ СЃРґРІРёРіР°С‚СЊСЃСЏ РЅРµ Р±СѓРґРµРј
+        if(! map->NextSet()) not_end = order->NextSet(); //РµСЃР»Рё РєР°СЂС‚Р° РїСЂРѕР»РёСЃС‚Р°РЅР°, РїРµСЂРµС…РѕРґРёРј Рє СЃР»РµРґСѓСЋС‰РµР№ РїРµСЂРµСЃС‚Р°РЅРѕРІРєРµ
     if (not_end) {
         words->GetStr(password, set, order, map);
         mbstowcs_s(&convertedChars, wpassword, size, password, _TRUNCATE);

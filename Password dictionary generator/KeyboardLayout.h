@@ -1,4 +1,4 @@
-#pragma once
+п»ї#pragma once
 #include <iostream>
 #include <string>
 
@@ -12,9 +12,9 @@ public:
 	int FindLayout(const char a);
 	int FindPosition(const unsigned layout, const char a);
 	KeyboardLayout(
-		const char* _l1, // язык - 1
-		const char* _l2, // язык - 2
-		const char* _l3, //тоже с шифтом
+		const char* _l1, // СЏР·С‹Рє - 1
+		const char* _l2, // СЏР·С‹Рє - 2
+		const char* _l3, //С‚РѕР¶Рµ СЃ С€РёС„С‚РѕРј
 		const char* _l4);
 	~KeyboardLayout();
 //private:
@@ -26,21 +26,21 @@ class SingleWord
 {
 public:
 	
-	//char* w; //исходное слово
-	char* w[2][4]; //[каждая раскладка][первая обычная, первая с шифтом];
+	//char* w; //РёСЃС…РѕРґРЅРѕРµ СЃР»РѕРІРѕ
+	char* w[2][4]; //[РєР°Р¶РґР°СЏ СЂР°СЃРєР»Р°РґРєР°][РїРµСЂРІР°СЏ РѕР±С‹С‡РЅР°СЏ, РїРµСЂРІР°СЏ СЃ С€РёС„С‚РѕРј];
 
 	SingleWord (const char* s);
 	SingleWord();
 	~SingleWord ();
 	SingleWord& operator= (const char* s);
 	void SetLayout(const char* s);
-	//еще нужна проверка, что слово написано в одной раскладке и без шифтов
+	//РµС‰Рµ РЅСѓР¶РЅР° РїСЂРѕРІРµСЂРєР°, С‡С‚Рѕ СЃР»РѕРІРѕ РЅР°РїРёСЃР°РЅРѕ РІ РѕРґРЅРѕР№ СЂР°СЃРєР»Р°РґРєРµ Рё Р±РµР· С€РёС„С‚РѕРІ
 	void Assign(const char* s);
 
 private:
 	void Clear();
-	unsigned length; //длина слова
-	int Layout; //какая раскладка
+	unsigned length; //РґР»РёРЅР° СЃР»РѕРІР°
+	int Layout; //РєР°РєР°СЏ СЂР°СЃРєР»Р°РґРєР°
 };
 
 

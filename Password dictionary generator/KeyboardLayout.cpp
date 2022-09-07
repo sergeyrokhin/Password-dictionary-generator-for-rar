@@ -1,4 +1,4 @@
-#include "KeyboardLayout.h"
+п»ї#include "KeyboardLayout.h"
 
 extern KeyboardLayout KB;
 
@@ -10,7 +10,7 @@ KeyboardLayout::KeyboardLayout(
 	const char* _l4) {
 
 	unsigned _length;
-	//обрезаем все раскладки до минимальной строки.
+	//РѕР±СЂРµР·Р°РµРј РІСЃРµ СЂР°СЃРєР»Р°РґРєРё РґРѕ РјРёРЅРёРјР°Р»СЊРЅРѕР№ СЃС‚СЂРѕРєРё.
 	length = strlen(_l1);
 	_length = strlen(_l2);
 	if (length > _length) length = _length;
@@ -19,7 +19,7 @@ KeyboardLayout::KeyboardLayout(
 	_length = strlen(_l4);
 	if (length > _length) length = _length;
 
-	//выделяем память
+	//РІС‹РґРµР»СЏРµРј РїР°РјСЏС‚СЊ
 	for(size_t i = 0; i < 4; ++i) l[i] = new char[length + 1];
 	//l1 = new char[number + 1];
 	//l2 = new char[number + 1];
@@ -32,7 +32,7 @@ KeyboardLayout::KeyboardLayout(
 		l[2][i] = _l3[i];
 		l[3][i] = _l4[i];
 	}
-	//замыкаем символом конца строки
+	//Р·Р°РјС‹РєР°РµРј СЃРёРјРІРѕР»РѕРј РєРѕРЅС†Р° СЃС‚СЂРѕРєРё
 	for (size_t i = 0; i < 4; ++i) l[i][length]  = '\0';
 }
 
@@ -49,7 +49,7 @@ int KeyboardLayout::FindLayout(const char a) {
 				if (numLayout == -1)
 				{
 					numLayout = j;
-					return numLayout; // возможно неоднозначная раскладка. но тогда нельзя использовать числа впереди слова
+					return numLayout; // РІРѕР·РјРѕР¶РЅРѕ РЅРµРѕРґРЅРѕР·РЅР°С‡РЅР°СЏ СЂР°СЃРєР»Р°РґРєР°. РЅРѕ С‚РѕРіРґР° РЅРµР»СЊР·СЏ РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ С‡РёСЃР»Р° РІРїРµСЂРµРґРё СЃР»РѕРІР°
 				}
 				else return -1;
 			}
@@ -70,14 +70,14 @@ int KeyboardLayout::FindPosition(const unsigned layout, const char a) {
 SingleWord::SingleWord()
 {
 	length = 0;
-	Layout = -1; // потом определим
+	Layout = -1; // РїРѕС‚РѕРј РѕРїСЂРµРґРµР»РёРј
 }
 
 
 SingleWord::SingleWord(const char* word)
 {
 	length = 0;
-	Layout = -1; // потом определим
+	Layout = -1; // РїРѕС‚РѕРј РѕРїСЂРµРґРµР»РёРј
 	Assign(word);
 }
 
@@ -108,28 +108,28 @@ void SingleWord::Assign(const char* s) {
 		Layout = KB.FindLayout(s[j]);
 		if (Layout != -1) break;
 	}
-	if (Layout == -1) return; //неправильное слово
+	if (Layout == -1) return; //РЅРµРїСЂР°РІРёР»СЊРЅРѕРµ СЃР»РѕРІРѕ
 
-	int* Numbers = new int[length]; //номера позиций в алфавите для каждой буквы слова
+	int* Numbers = new int[length]; //РЅРѕРјРµСЂР° РїРѕР·РёС†РёР№ РІ Р°Р»С„Р°РІРёС‚Рµ РґР»СЏ РєР°Р¶РґРѕР№ Р±СѓРєРІС‹ СЃР»РѕРІР°
 
-	//проверим слово на принадлежность только одной раскладке
+	//РїСЂРѕРІРµСЂРёРј СЃР»РѕРІРѕ РЅР° РїСЂРёРЅР°РґР»РµР¶РЅРѕСЃС‚СЊ С‚РѕР»СЊРєРѕ РѕРґРЅРѕР№ СЂР°СЃРєР»Р°РґРєРµ
 	for (size_t j = 0; j < length; ++j) {
 		Numbers[j] = KB.FindPosition(Layout, s[j]);
 		if (Numbers[j] == -1) {
 			delete Numbers;
-			return; //не все символы из этого алфавита. //это ошибка, слово не задано
+			return; //РЅРµ РІСЃРµ СЃРёРјРІРѕР»С‹ РёР· СЌС‚РѕРіРѕ Р°Р»С„Р°РІРёС‚Р°. //СЌС‚Рѕ РѕС€РёР±РєР°, СЃР»РѕРІРѕ РЅРµ Р·Р°РґР°РЅРѕ
 		}
 	}
-	// теперь создаем вариации этого слова
-	for (size_t i = 0; i < 2; ++i) // раскладки используют 0 - строки 0,1; 1 строки 2,3  алфавита
-		for (size_t j = 0; j < 4; ++j) { //0,1 строки алфавита 2,3 строки с инверсией первой буквы
+	// С‚РµРїРµСЂСЊ СЃРѕР·РґР°РµРј РІР°СЂРёР°С†РёРё СЌС‚РѕРіРѕ СЃР»РѕРІР°
+	for (size_t i = 0; i < 2; ++i) // СЂР°СЃРєР»Р°РґРєРё РёСЃРїРѕР»СЊР·СѓСЋС‚ 0 - СЃС‚СЂРѕРєРё 0,1; 1 СЃС‚СЂРѕРєРё 2,3  Р°Р»С„Р°РІРёС‚Р°
+		for (size_t j = 0; j < 4; ++j) { //0,1 СЃС‚СЂРѕРєРё Р°Р»С„Р°РІРёС‚Р° 2,3 СЃС‚СЂРѕРєРё СЃ РёРЅРІРµСЂСЃРёРµР№ РїРµСЂРІРѕР№ Р±СѓРєРІС‹
 			w[i][j] = new char[length + 1];
 			for (size_t k = 0; k < length; ++k) {
 				w[i][j][k] = KB.l[(i * 2) + (j % 2)][Numbers[k]];
 			}
 			w[i][j][length] = 0;
 
-			if (j > 1) { //1 - заглавные перезапишем
+			if (j > 1) { //1 - Р·Р°РіР»Р°РІРЅС‹Рµ РїРµСЂРµР·Р°РїРёС€РµРј
 				w[i][j][0] = KB.l[(i * 2) + ((j + 1) % 2)][Numbers[0]]; //0 => 2, 1 => 3, 2 => 0, 3 => 1,
 			}
 		}

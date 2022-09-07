@@ -1,13 +1,13 @@
-#pragma once
+п»ї#pragma once
 class WordSelection
 {
 protected:
-	unsigned int n; //всего слов
-	unsigned int m; //слов в выборке
-	unsigned int k; //слов последних обязательных
-	unsigned long long selection; //текущая выборка
+	unsigned int n; //РІСЃРµРіРѕ СЃР»РѕРІ
+	unsigned int m; //СЃР»РѕРІ РІ РІС‹Р±РѕСЂРєРµ
+	unsigned int k; //СЃР»РѕРІ РїРѕСЃР»РµРґРЅРёС… РѕР±СЏР·Р°С‚РµР»СЊРЅС‹С…
+	unsigned long long selection; //С‚РµРєСѓС‰Р°СЏ РІС‹Р±РѕСЂРєР°
 	unsigned long long selectionStop;
-	unsigned long long selectionStart; //последние обязательные
+	unsigned long long selectionStart; //РїРѕСЃР»РµРґРЅРёРµ РѕР±СЏР·Р°С‚РµР»СЊРЅС‹Рµ
 	char** word;
 
 public:
