@@ -8,20 +8,20 @@ void WordSelection::PrintOutAll()
 {
     for (size_t i = 0; i < n; i++)
     {
-        std::cout << i << " " << word[i] << endl;
+        std::cout << i << " " << word[i] << " ";
     }
 }
 
 void WordSelection::PrintOut()
 {
-    std::cout << endl << std::bitset<32>(selection) << endl;
+    std::cout << std::bitset<32>(selection);
     for (size_t i = 0; i < n; i++) {
         if (selection & ((unsigned long long) 1) << i)
         {
             std::cout << word[i] << " ";
         }
     }
-    std::cout << endl;
+    //std::cout << endl;
 }
 
 
@@ -29,15 +29,15 @@ void WordSelection::FillSelection(char** lot_word)
 {
     unsigned k = 0;
 
-    std::cout << std::bitset<32>(selection) << endl;
+    std::cout << std::bitset<32>(selection);
     for (size_t i = 0; i < n; i++) {
         if (selection & ((unsigned long long) 1) << i)
         {
-            std::cout << word[i] << " ";
+            std::cout << " " << word[i];
             lot_word[k++] = word[i];
         }
     }
-    std::cout << endl;
+    //std::cout << endl;
 }
 
 void WordSelection::Start()

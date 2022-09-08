@@ -6,30 +6,24 @@
 #include "unrar.h"
 #include "Сombinatorics.h"
 
+#include "ConsoleFrame.h"
+extern ConsoleFrame <unsigned> Console;
+
+
 extern bool password_found;
 enum { EXTRACT, TEST, PRINT, LIST };
 
 void ExtractArchive(char* ArcName);
-void ListArchive(char* ArcName);
 void ShowComment(wchar_t* CmtBuf);
-void OutHelp(void);
+void ShowArcInfo(unsigned int Flags, char* ArcName);
 
 enum ERR_TYPE { ERR_OPEN, ERR_READ, ERR_PROCESS };
 void OutError(int Error, char* ArcName, int ErrType);
 
-void ShowArcInfo(unsigned int Flags, char* ArcName);
-void PrintTime(const char* Label, unsigned int Low, unsigned int High);
 void OutProcessFileError(int Error);
 int CALLBACK CallbackProc(UINT msg, LPARAM UserData, LPARAM P1, LPARAM P2);
 
 PasswordCounter* PC;
-
-void OutHelp(void)
-{
-	printf("\nUNRDLL.   This is a simple example of UNRAR.DLL usage\n");
-	printf("\nSyntax:\n");
-	printf("\nUNRDLL <Archive>  password1 password2 ...\n");
-}
 
 
 void ExtractArchive(char* ArcName, KeyWords* words, WordMap* map)
@@ -53,16 +47,17 @@ void ExtractArchive(char* ArcName, KeyWords* words, WordMap* map)
 	//    hArcData = RAROpenArchiveEx(&OpenArchiveData);
 
 
-	//    ShowArcInfo(OpenArchiveData.Flags, ArcName);
+	    ShowArcInfo(OpenArchiveData.Flags, ArcName);
 
 		//if (OpenArchiveData.CmtState == 1)
 		//    ShowComment(CmtBuf);
 
 	for (size_t set = 0; set < 2; set++)
 	{
+		Console.SetCursor(2);
+		cout << set;
 		WordOrder order(words->number);
 		PC = new PasswordCounter(words, set, map, &order);
-		printf("\n");
 
 		while (PC->NextPassword()) {
 			hArcData = RAROpenArchiveEx(&OpenArchiveData);
@@ -72,7 +67,8 @@ void ExtractArchive(char* ArcName, KeyWords* words, WordMap* map)
 				return;
 			}
 			RHCode = RARReadHeader(hArcData, &HeaderData);
-			printf("\rtest: %s Number of test: %u", PC->password, PC->count);
+			Console.SetCursor(3);
+			printf("%u test: %s", PC->count, PC->password);
 			RARSetPassword(hArcData, PC->password);
 			PFCode = RARProcessFile(hArcData, (Mode == EXTRACT) ? RAR_EXTRACT : RAR_TEST, NULL, NULL);
 			if (PFCode == 0) {
@@ -117,7 +113,6 @@ void OutError(int Error, char* ArcName, int ErrType)
 			printf("Volume open error");
 		else
 			printf("\nCannot open file: %s", ArcName);
-		OutHelp();
 		break;
 	case ERAR_ECREATE:
 		printf("File create error");
@@ -149,36 +144,6 @@ void OutError(int Error, char* ArcName, int ErrType)
 	}
 }
 
-
-void ShowArcInfo(unsigned int Flags, char* ArcName)
-{
-	printf("\nArchive %s\n", ArcName);
-	printf("\nVolume:\t\t%s", (Flags & 1) ? "yes" : "no");
-	printf("\nComment:\t%s", (Flags & 2) ? "yes" : "no");
-	printf("\nLocked:\t\t%s", (Flags & 4) ? "yes" : "no");
-	printf("\nSolid:\t\t%s", (Flags & 8) ? "yes" : "no");
-	printf("\nNew naming:\t%s", (Flags & 16) ? "yes" : "no");
-	printf("\nRecovery:\t%s", (Flags & 64) ? "yes" : "no");
-	printf("\nEncr.headers:\t%s", (Flags & 128) ? "yes" : "no");
-	printf("\nFirst volume:\t%s", (Flags & 256) ? "yes" : "no or older than 3.0");
-	printf("\n---------------------------\n");
-}
-
-
-void PrintTime(const char* Label, unsigned int Low, unsigned int High)
-{
-	if (Low != 0 || High != 0)
-	{
-		FILETIME ft;
-		ft.dwLowDateTime = Low;
-		ft.dwHighDateTime = High;
-		SYSTEMTIME ust, st;
-		FileTimeToSystemTime(&ft, &ust);
-		SystemTimeToTzSpecificLocalTime(NULL, &ust, &st);
-		printf("\n%s:  %u-%02u-%02u %02u:%02u:%02u,%03u", Label, st.wYear, st.wMonth,
-			st.wDay, st.wHour, st.wMinute, st.wSecond, st.wMilliseconds);
-	}
-}
 
 
 int CALLBACK CallbackProc(UINT msg, LPARAM UserData, LPARAM P1, LPARAM P2)
@@ -251,4 +216,10 @@ int CALLBACK CallbackProc(UINT msg, LPARAM UserData, LPARAM P1, LPARAM P2)
 	return(1);
 	}
 	return(0);
+}
+
+void ShowArcInfo(unsigned int Flags, char* ArcName)
+{
+	printf("\nArchive %s\n", ArcName);
+	printf("\n---------------------------\n");
 }

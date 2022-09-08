@@ -2,12 +2,15 @@
 //
 
 #include <iostream>
-//#include <windows.h>
 #include "WordSelection.h"
 #include "KeyboardLayout.h"
 #include "Сombinatorics.h"
+#include "ConsoleFrame.h"
 
 void ExtractArchive(char* ArcName, KeyWords* words, WordMap* map);
+
+ConsoleFrame <unsigned> Console; 
+
 
 using namespace std;
 KeyboardLayout KB(
@@ -40,13 +43,17 @@ int main(int argc, char* argv[])
 		return(0);
 	}
 
+	Console.AddPoint(0, 0, 1); //000010001111
+	Console.AddPoint(1, 33, 1); //password
+	Console.AddPoint(2, 0, 2); //1
+	Console.AddPoint(3, 3, 2); //temp
 
 	//из командной строки считываем слова и создаем набор слов
 	WordSelection ws(n, k, &argv[4]);
 	std::cout << "\n=========\n";
 	ws.PrintOutAll();
-	std::cout << "\n";
 
+	Console.Slide(1);
 	//перебор количество слов от 1 до m 
 	for (size_t s_w_q = k + 1; s_w_q <= m; s_w_q++) // s_w_q - количество слов в выборке
 	{
@@ -56,9 +63,10 @@ int main(int argc, char* argv[])
 		char** lot_word = new char* [s_w_q]; //ссылки на слова
 		do
 		{
-			std::cout << "\n-----\n";
+			//std::cout << "\n-----\n";
+			Console.Slide(1);
+			Console.SetCursor(0);
 			ws.FillSelection(lot_word); //заполняем выборкой
-
 			//Заполним
 			KeyWords words(s_w_q);
 
