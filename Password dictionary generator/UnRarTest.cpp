@@ -47,7 +47,7 @@ void ExtractArchive(char* ArcName, KeyWords* words, WordMap* map)
 	//    hArcData = RAROpenArchiveEx(&OpenArchiveData);
 
 
-	    ShowArcInfo(OpenArchiveData.Flags, ArcName);
+	    //ShowArcInfo(OpenArchiveData.Flags, ArcName);
 
 		//if (OpenArchiveData.CmtState == 1)
 		//    ShowComment(CmtBuf);
