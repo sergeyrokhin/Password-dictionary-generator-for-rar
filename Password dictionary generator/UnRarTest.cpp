@@ -5,10 +5,11 @@
 #include <locale.h>
 #include "unrar.h"
 #include "Сombinatorics.h"
-
 #include "ConsoleFrame.h"
-extern ConsoleFrame <unsigned> Console;
+#include "StackOfWords.h"
 
+extern ConsoleFrame <unsigned> Console;
+extern StackOfWords stack_of_words;
 
 extern bool password_found;
 enum { EXTRACT, TEST, PRINT, LIST };
@@ -74,7 +75,8 @@ void ExtractArchive(char* ArcName, KeyWords* words, WordMap* map)
 			if (PFCode == 0) {
 				printf("\n======= !!!! ===== password: %s\nNumber of test: %u\n", PC->password, PC->count);
 				password_found = true;
-				set = 2; //прервать перебор сетов
+				stack_of_words.PasswordFound(PC->password);
+				set = 2; //прервать цикл перебор сетов, set < 2
 				break;
 			}
 			RARCloseArchive(hArcData);

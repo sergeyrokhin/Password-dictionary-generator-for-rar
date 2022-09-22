@@ -6,11 +6,13 @@
 #include "KeyboardLayout.h"
 #include "Сombinatorics.h"
 #include "ConsoleFrame.h"
+#include "StackOfWords.h"
+#include "SimpleTimer.h"
 
 void ExtractArchive(char* ArcName, KeyWords* words, WordMap* map);
 
 ConsoleFrame <unsigned> Console; 
-
+StackOfWords stack_of_words;
 
 using namespace std;
 KeyboardLayout KB(
@@ -23,44 +25,55 @@ bool password_found = false;
 
 
 void PrintHelp() {
-	std::cout << "параметры: <файл-архив> <максимальное количество слов в выборке (m)> <количество обязательных они в конце> <Слово1> <Слово2> ... <Слово(n)>\n";
-	std::cout << "пример параметров: arhive001.rar 3 1 win cool 007\n";
+	std::cout << "параметры: <файл-архив>\n";
+	std::cout << "пример параметров: arhive001.rar\n";
 }
 
 
-//    TCHAR szPath[] = L"\"C:\\Program Files\\WinRAR\\RAR.exe\" t -phj[by1 C:\\Users\\User\\pi2.rar";
 int main(int argc, char* argv[])
 {
-	unsigned int k,m, n = (unsigned)argc - 4;  // если передаем аргументы, то argc будет больше 1(в зависимости от кол-ва аргументов)
+
+	SimpleTimer st(" Итоговое время:");
 
 	setlocale(LC_ALL, "Russian");
 
-	m = atoi(argv[2]);
-	k = atoi(argv[3]);
-	if (n < 1 || m < 1 || m > n || k >= m)
+	if (argc < 2)
 	{
 		PrintHelp();
 		return(0);
-	}
+	};
 
 	Console.AddPoint(0, 0, 1); //000010001111
 	Console.AddPoint(1, 33, 1); //password
 	Console.AddPoint(2, 0, 2); //1
 	Console.AddPoint(3, 3, 2); //temp
 
-	//из командной строки считываем слова и создаем набор слов
-	WordSelection ws(n, k, &argv[4]);
-	std::cout << "\n=========\n";
+
+	stack_of_words.SetFileName(argv[1]);
+	if (stack_of_words.OpenFile())
+	{
+		PrintHelp();
+		stack_of_words.SaveFile();
+		return(0);
+	};
+
+	while (stack_of_words.Next())
+	{
+		SimpleTimer st1(" время:");
+	//создаем набор слов
+	WordSelection ws(stack_of_words);
+	//std::cout << "\n=========\n";
 	ws.PrintOutAll();
 
-	Console.Slide(1);
-	//перебор количество слов от 1 до m 
-	for (size_t s_w_q = k + 1; s_w_q <= m; s_w_q++) // s_w_q - количество слов в выборке
+	Console.Slide(2); //сдвинем консоль на следующую строку
+	//перебор количество слов от к+1 до m, к - обязательные присутствующие слова
+	unsigned short number_max = stack_of_words.number_max < ws.GetNumberOfWord() ? stack_of_words.number_max : ws.GetNumberOfWord();
+	for (size_t s_w_q = stack_of_words.number_min; s_w_q <= number_max; s_w_q++) // s_w_q - количество слов в выборке
 	{
 		//перебор слов
 		WordMap map(s_w_q); //После полного перебора, он встает в начальное состояние, поэтому можно не сбрасывать в начальное состояние
 		ws.Start(s_w_q); //определяем количество в выборке
-		char** lot_word = new char* [s_w_q]; //ссылки на слова
+		char** lot_word = new char* [s_w_q]; //ссылки на слова.
 		do
 		{
 			//std::cout << "\n-----\n";
@@ -81,8 +94,11 @@ int main(int argc, char* argv[])
 			}
 		} while (ws.Next());
 		delete[] lot_word;
+		
 	}
-	std::cout << "Конец\n";
+		//std::cout << "Конец\n";
+		stack_of_words.SaveFile();
+	}
+	stack_of_words.SaveFile();
 	return 0;
-
 }
