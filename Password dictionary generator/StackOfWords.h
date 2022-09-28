@@ -3,15 +3,16 @@
 #include <string>
 #include <chrono>
 
-
-using namespace std;
+extern const std::string suffix;
+extern const std::string separator;
+extern const std::string suffix_psw;
 
 class StackOfWords
 {
 public: 
-	vector <string> word;
+	std::vector <std::string> word;
 	StackOfWords();
-	~StackOfWords() {}
+	~StackOfWords();
 	int OpenFile();
 	int SaveFile();
 	void SetFileName(const char* filename);
@@ -19,7 +20,7 @@ public:
 	void PasswordFound(const char * pwd);
 	unsigned number_max, number_min;
 private :
-	string filename;
-	vector <string> word_new;
+	std::string filename;
+	std::vector <std::string> word_new;
 };
 

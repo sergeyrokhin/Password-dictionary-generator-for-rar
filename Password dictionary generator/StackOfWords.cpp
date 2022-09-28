@@ -4,10 +4,6 @@
 #include <string>
 #include "StackOfWords.h"
 
-const string suffix = "$.txt"s;
-const string separator = "##########################"s;
-const string suffix_psw = "$psw.txt"s;
-
 StackOfWords::StackOfWords()
 {
 	number_max = 1;
@@ -16,11 +12,17 @@ StackOfWords::StackOfWords()
 
 int StackOfWords::OpenFile()
 {
-	ifstream myfile;
-	myfile.open(this->filename + suffix);
-	if (myfile.is_open())
+	auto set_file = filename + suffix;
+	std::ifstream myfile(set_file);
+
+	if (myfile.bad())
 	{
-		string tempword;
+		std::cout << "Unable to open init file " << set_file << std::endl;;
+		return -1;
+	}
+	else
+	{
+		std::string tempword;
 		myfile >> number_max >> number_min;
 
 		if (number_min == 0) number_min = 1; //не должны быть нулевыми
@@ -28,53 +30,56 @@ int StackOfWords::OpenFile()
 		if (number_max >= 32) number_max = 32; //не должны быть нереально большими; на практике не больше 10 слов в выборке
 		if (number_min > number_max) number_min = number_max; // должны быть ранжированы
 
-		while (true) //считываем проверенные слова
-		{
-			if (myfile.eof()) break;
-			myfile >> tempword;
-			if (tempword.empty()) continue;
-			if (tempword == separator)	break; //пока не наткнемс€ на сепаратор
-			word.emplace_back(tempword);
-		}
+		std::cout << "\n¬ыборка из слов, количество в выборке от " << number_min << " максимально " << number_max << std::endl;
+		std::cout << "—лова дл€ перебора: \n";
+
 		while (true) //считываем новые слова дл€ их проверки
 		{
-			if (myfile.eof()) break;
 			myfile >> tempword;
-			if (tempword.empty()) continue; //пустого слова не может быть, только в конце.
-			if (tempword == separator)	continue; // сепаратора второй раз тоже не дложно быть
+			if (myfile.eof()) break; //если конец файла, то нужно провер€ть, т.к. tempword не затираетс€
+			if (tempword.empty()) continue;// continue;
+			if (tempword == separator)	break; //пока не наткнемс€ на сепаратор
 			word_new.emplace_back(tempword);
+			std::cout << tempword << std::endl;
+		}
+		std::cout << "ќтработанные комбинации слов: \n";
+		while (true) //считываем проверенные слова
+		{
+			myfile >> tempword;
+			if (myfile.eof()) break; //если конец файла, то нужно провер€ть, т.к. tempword не затираетс€
+			if (tempword.empty()) break; //пустого слова не может быть, только в конце.
+			if (tempword == separator)	continue; // сепаратора второй раз тоже не дложно быть
+			word.emplace_back(tempword);
+			std::cout << tempword << std::endl;
 		}
 
 		myfile.close();
 		return 0;
 	}
-	else
-	{
-		cout << "Unable to open file " << filename << suffix << endl;;
-		return -1;
-	}
 }
+
+StackOfWords::~StackOfWords() { }
 
 int StackOfWords::SaveFile()
 {
-	ofstream myfile;
+	std::ofstream myfile;
 	myfile.open(this->filename + suffix);
 	if (myfile.is_open())
 	{
-		myfile << number_max << " " << number_min << endl;
+		myfile << number_max << " " << number_min << std::endl;
 
-		for (const auto &tempword : word) {
-			myfile << tempword << endl;
+		for (const auto& tempword : word_new) {
+			myfile << tempword << std::endl;
 		}
-		myfile << separator << endl;
-		for (const auto &tempword : word_new) {
-			myfile << tempword << endl;
+		myfile << separator << std::endl;
+		for (const auto& tempword : word) {
+			myfile << tempword << std::endl;
 		}
 		myfile.close();
 	}
 	else 
 	{
-		cout << "Unable to open file " << filename << suffix << endl;
+		std::cout << "Unable to open file " << filename << suffix << std::endl;
 		return -1;
 	}
 	if (word.size() == 0) {
@@ -84,31 +89,30 @@ int StackOfWords::SaveFile()
 		}
 	}
 	if (word_new.size() == 0) {
-		cout << "Nothing to do: " << filename << suffix << endl;
+		std::cout << "Nothing to do: " << filename << suffix << std::endl;
 		return -1;
 	}
 	return 0;
 }
 
 void StackOfWords::PasswordFound(const char* pwd) {
-	ofstream myfile;
-	myfile.open(this->filename + suffix_psw);
+	std::ofstream myfile(filename + suffix_psw);
 	if (myfile.is_open())
 	{
-		myfile << "Password:" << endl << pwd << endl;
+		myfile << "Password:" << std::endl << pwd << std::endl;
 		myfile.close();
 		return;
 	}
 	else
 	{
-		cout << "Unable to open file " << filename << suffix_psw << endl;
+		std::cout << "Unable to open file " << filename << suffix_psw << std::endl;
 		return;
 	}
 }
 
-void StackOfWords::SetFileName(const char* filename)
+void StackOfWords::SetFileName(const char* _filename)
 {
-	this->filename = filename;
+	filename = _filename;
 }
 
 bool StackOfWords::Next()
@@ -119,16 +123,25 @@ bool StackOfWords::Next()
 		{
 			return false;
 		}
-		if (std::find(word.begin(), word.end(), word_new.back()) == word.end())
-		{
+		//if (std::find(word.begin(), word.end(), word_new.back()) == word.end())
+		//{
 			//Ќе найден в уже имеющихс€
 			word.emplace_back(word_new.back());
+			std::cout << "\nѕровер€ем комбинации слов:\n";
+			for(const auto &word_prnt : word) {
+				std::cout << word_prnt << std::endl;
+			}
 			word_new.pop_back();
 			return true;
-		}
-		else {
-			//Ќайден в уже имеющихс€, просто удалим
-			word_new.pop_back();
-		}
+		//}
+		//else {
+		//	//Ќайден в уже имеющихс€, просто удалим
+		//	word_new.pop_back();
+		//}
 	}
 }
+
+using namespace std;
+const std::string suffix = "$.txt"s;
+const std::string separator = "##########################"s;
+const std::string suffix_psw = "$psw.txt"s;

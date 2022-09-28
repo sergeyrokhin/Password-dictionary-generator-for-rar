@@ -5,10 +5,10 @@
 #include <locale.h>
 #include "unrar.h"
 #include "Сombinatorics.h"
-#include "ConsoleFrame.h"
+//#include "ConsoleFrame.h"
 #include "StackOfWords.h"
 
-extern ConsoleFrame <unsigned> Console;
+//extern ConsoleFrame <unsigned> Console;
 extern StackOfWords stack_of_words;
 
 extern bool password_found;
@@ -29,7 +29,7 @@ PasswordCounter* PC;
 
 void ExtractArchive(char* ArcName, KeyWords* words, WordMap* map)
 {
-	int Mode = TEST;
+	//int Mode = TEST;
 	HANDLE hArcData;
 	int RHCode, PFCode;
 	wchar_t CmtBuf[16384];
@@ -44,7 +44,7 @@ void ExtractArchive(char* ArcName, KeyWords* words, WordMap* map)
 	OpenArchiveData.CmtBufSize = sizeof(CmtBuf) / sizeof(CmtBuf[0]);
 	OpenArchiveData.OpenMode = RAR_OM_EXTRACT;
 	OpenArchiveData.Callback = CallbackProc;
-	OpenArchiveData.UserData = Mode;
+	//OpenArchiveData.UserData = Mode;
 	//    hArcData = RAROpenArchiveEx(&OpenArchiveData);
 
 
@@ -55,8 +55,8 @@ void ExtractArchive(char* ArcName, KeyWords* words, WordMap* map)
 
 	for (size_t set = 0; set < 2; set++)
 	{
-		Console.SetCursor(2);
-		cout << set;
+		//Console.SetCursor(2);
+		//cout << set;
 		WordOrder order(words->number);
 		PC = new PasswordCounter(words, set, map, &order);
 
@@ -68,10 +68,10 @@ void ExtractArchive(char* ArcName, KeyWords* words, WordMap* map)
 				return;
 			}
 			RHCode = RARReadHeader(hArcData, &HeaderData);
-			Console.SetCursor(3);
-			printf("%u test: %s", PC->count, PC->password);
+			//Console.SetCursor(3);
+			//printf("\n%u test: %s", PC->count, PC->password);
 			RARSetPassword(hArcData, PC->password);
-			PFCode = RARProcessFile(hArcData, (Mode == EXTRACT) ? RAR_EXTRACT : RAR_TEST, NULL, NULL);
+			PFCode = RARProcessFile(hArcData, RAR_TEST, NULL, NULL);
 			if (PFCode == 0) {
 				printf("\n======= !!!! ===== password: %s\nNumber of test: %u\n", PC->password, PC->count);
 				password_found = true;
