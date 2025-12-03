@@ -25,30 +25,30 @@ int StackOfWords::OpenFile()
 		std::string tempword;
 		myfile >> number_max >> number_min;
 
-		if (number_min == 0) number_min = 1; //не должны быть нулевыми
-		if (number_min > number_max) number_max = number_min; // должны быть ранжированы
-		if (number_max >= 32) number_max = 32; //не должны быть нереально большими; на практике не больше 10 слов в выборке
-		if (number_min > number_max) number_min = number_max; // должны быть ранжированы
+		if (number_min == 0) number_min = 1; //РЅРµ РґРѕР»Р¶РЅС‹ Р±С‹С‚СЊ РЅСѓР»РµРІС‹РјРё
+		if (number_min > number_max) number_max = number_min; // РґРѕР»Р¶РЅС‹ Р±С‹С‚СЊ СЂР°РЅР¶РёСЂРѕРІР°РЅС‹
+		if (number_max >= 32) number_max = 32; //РЅРµ РґРѕР»Р¶РЅС‹ Р±С‹С‚СЊ РЅРµСЂРµР°Р»СЊРЅРѕ Р±РѕР»СЊС€РёРјРё; РЅР° РїСЂР°РєС‚РёРєРµ РЅРµ Р±РѕР»СЊС€Рµ 10 СЃР»РѕРІ РІ РІС‹Р±РѕСЂРєРµ
+		if (number_min > number_max) number_min = number_max; // РґРѕР»Р¶РЅС‹ Р±С‹С‚СЊ СЂР°РЅР¶РёСЂРѕРІР°РЅС‹
 
-		std::cout << "\nВыборка из слов, количество в выборке от " << number_min << " максимально " << number_max << std::endl;
-		std::cout << "Слова для перебора: \n";
+		std::cout << "\nР’С‹Р±РѕСЂРєР° РёР· СЃР»РѕРІ, РєРѕР»РёС‡РµСЃС‚РІРѕ РІ РІС‹Р±РѕСЂРєРµ РѕС‚ " << number_min << " РјР°РєСЃРёРјР°Р»СЊРЅРѕ " << number_max << std::endl;
+		std::cout << "РЎР»РѕРІР° РґР»СЏ РїРµСЂРµР±РѕСЂР°: \n";
 
-		while (true) //считываем новые слова для их проверки
+		while (true) //СЃС‡РёС‚С‹РІР°РµРј РЅРѕРІС‹Рµ СЃР»РѕРІР° РґР»СЏ РёС… РїСЂРѕРІРµСЂРєРё
 		{
 			myfile >> tempword;
-			if (myfile.eof()) break; //если конец файла, то нужно проверять, т.к. tempword не затирается
+			if (myfile.eof()) break; //РµСЃР»Рё РєРѕРЅРµС† С„Р°Р№Р»Р°, С‚Рѕ РЅСѓР¶РЅРѕ РїСЂРѕРІРµСЂСЏС‚СЊ, С‚.Рє. tempword РЅРµ Р·Р°С‚РёСЂР°РµС‚СЃСЏ
 			if (tempword.empty()) continue;// continue;
-			if (tempword == separator)	break; //пока не наткнемся на сепаратор
+			if (tempword == separator)	break; //РїРѕРєР° РЅРµ РЅР°С‚РєРЅРµРјСЃСЏ РЅР° СЃРµРїР°СЂР°С‚РѕСЂ
 			word_new.emplace_back(tempword);
 			std::cout << tempword << std::endl;
 		}
-		std::cout << "Отработанные комбинации слов: \n";
-		while (true) //считываем проверенные слова
+		std::cout << "РћС‚СЂР°Р±РѕС‚Р°РЅРЅС‹Рµ РєРѕРјР±РёРЅР°С†РёРё СЃР»РѕРІ: \n";
+		while (true) //СЃС‡РёС‚С‹РІР°РµРј РїСЂРѕРІРµСЂРµРЅРЅС‹Рµ СЃР»РѕРІР°
 		{
 			myfile >> tempword;
-			if (myfile.eof()) break; //если конец файла, то нужно проверять, т.к. tempword не затирается
-			if (tempword.empty()) break; //пустого слова не может быть, только в конце.
-			if (tempword == separator)	continue; // сепаратора второй раз тоже не дложно быть
+			if (myfile.eof()) break; //РµСЃР»Рё РєРѕРЅРµС† С„Р°Р№Р»Р°, С‚Рѕ РЅСѓР¶РЅРѕ РїСЂРѕРІРµСЂСЏС‚СЊ, С‚.Рє. tempword РЅРµ Р·Р°С‚РёСЂР°РµС‚СЃСЏ
+			if (tempword.empty()) break; //РїСѓСЃС‚РѕРіРѕ СЃР»РѕРІР° РЅРµ РјРѕР¶РµС‚ Р±С‹С‚СЊ, С‚РѕР»СЊРєРѕ РІ РєРѕРЅС†Рµ.
+			if (tempword == separator)	continue; // СЃРµРїР°СЂР°С‚РѕСЂР° РІС‚РѕСЂРѕР№ СЂР°Р· С‚РѕР¶Рµ РЅРµ РґР»РѕР¶РЅРѕ Р±С‹С‚СЊ
 			word.emplace_back(tempword);
 			std::cout << tempword << std::endl;
 		}
@@ -125,9 +125,9 @@ bool StackOfWords::Next()
 		}
 		//if (std::find(word.begin(), word.end(), word_new.back()) == word.end())
 		//{
-			//Не найден в уже имеющихся
+			//РќРµ РЅР°Р№РґРµРЅ РІ СѓР¶Рµ РёРјРµСЋС‰РёС…СЃСЏ
 			word.emplace_back(word_new.back());
-			std::cout << "\nПроверяем комбинации слов:\n";
+			std::cout << "\nРџСЂРѕРІРµСЂСЏРµРј РєРѕРјР±РёРЅР°С†РёРё СЃР»РѕРІ:\n";
 			for(const auto &word_prnt : word) {
 				std::cout << word_prnt << std::endl;
 			}
@@ -135,7 +135,7 @@ bool StackOfWords::Next()
 			return true;
 		//}
 		//else {
-		//	//Найден в уже имеющихся, просто удалим
+		//	//РќР°Р№РґРµРЅ РІ СѓР¶Рµ РёРјРµСЋС‰РёС…СЃСЏ, РїСЂРѕСЃС‚Рѕ СѓРґР°Р»РёРј
 		//	word_new.pop_back();
 		//}
 	}

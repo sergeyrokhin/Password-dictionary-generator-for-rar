@@ -29,7 +29,7 @@ public:
 //template <class T1, class T2>
 //void Print(ConsoleFrame<T1> Console, T1 name, T2 text);
 
-//Реализация
+//Р РµР°Р»РёР·Р°С†РёСЏ
 
 template <class T>
 ConsoleFrame <T>::ConsoleFrame() : y_zero(0)

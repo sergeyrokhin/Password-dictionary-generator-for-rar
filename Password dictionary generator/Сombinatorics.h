@@ -5,8 +5,8 @@
 class WordOrder
 {
 public:
-	unsigned number; //количество слов
-	unsigned* order; //текущее положение
+	unsigned number; //РєРѕР»РёС‡РµСЃС‚РІРѕ СЃР»РѕРІ
+	unsigned* order; //С‚РµРєСѓС‰РµРµ РїРѕР»РѕР¶РµРЅРёРµ
 	bool NextSet();
 	void GetStr(string& ss, const char* separator = NULL);
 	WordOrder(unsigned num);
@@ -16,8 +16,8 @@ public:
 class WordMap
 {
 public:
-	unsigned number; //количество слов
-	unsigned* placement; //расстановка
+	unsigned number; //РєРѕР»РёС‡РµСЃС‚РІРѕ СЃР»РѕРІ
+	unsigned* placement; //СЂР°СЃСЃС‚Р°РЅРѕРІРєР°
 	bool NextSet();
 	void GetStr(string& ss, const char* separator = NULL);
 	WordMap();
@@ -28,9 +28,9 @@ public:
 class KeyWords
 {
 public:
-	unsigned lenght; //общая длина слов
-	unsigned number; //количество слов
-	SingleWord* words; //слова
+	unsigned lenght; //РѕР±С‰Р°СЏ РґР»РёРЅР° СЃР»РѕРІ
+	unsigned number; //РєРѕР»РёС‡РµСЃС‚РІРѕ СЃР»РѕРІ
+	SingleWord* words; //СЃР»РѕРІР°
 	void SetWord(char* word, unsigned n);
 	void Set(unsigned n);
 	//char* GetStr(const WordOrder* order, const WordMap* map,  const char* separator = NULL);

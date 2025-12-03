@@ -1,4 +1,4 @@
-﻿#define STRICT
+#define STRICT
 #include <windows.h>
 #include <stdio.h>
 #include <ctype.h>
