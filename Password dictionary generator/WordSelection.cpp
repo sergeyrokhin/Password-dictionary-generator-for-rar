@@ -34,7 +34,7 @@ void WordSelection::FillSelection(char** lot_word)
     unsigned k = 0;
 
     //std::cout << std::bitset<32>(selection);
-    std::cout << "тест из слов:" << std::endl;
+    std::cout << "перестановки слов:" << std::endl;
     for (size_t i = 0; i < n; i++) {
         if (selection & ((unsigned long long) 1) << i)
         {
